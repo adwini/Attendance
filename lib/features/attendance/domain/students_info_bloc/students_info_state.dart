@@ -45,4 +45,5 @@ class StudentInfoState {
       isDeleted: isDeleted ?? this.isDeleted,
     );
   }
+  
 }

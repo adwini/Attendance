@@ -34,10 +34,10 @@ class _UpdateClassInfoPageState extends State<UpdateClassInfoPage> {
     super.initState();
 
     _classInfoBloc = BlocProvider.of<ClassInfoBloc>(context);
-    _subjectCode =
-        TextEditingController(text: widget.classInfoModel.subjectCode);
+    _subjectCode = TextEditingController(text: widget.classInfoModel.subjectCode);
 
     _classInfo = TextEditingController(text: widget.classInfoModel.title);
+    
     _titleIDController = widget.classInfoModel.id;
     _updatedAt = widget.classInfoModel.createdAt!;
   }
@@ -57,27 +57,28 @@ class _UpdateClassInfoPageState extends State<UpdateClassInfoPage> {
           );
         }
         return Scaffold(
-          appBar: AppBar(
-            backgroundColor: primaryColor,
-            titleSpacing: 00.0,
-            centerTitle: true,
-            toolbarHeight: 60.2,
-            toolbarOpacity: 0.8,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(25),
-                  bottomLeft: Radius.circular(25)),
-            ),
-            elevation: 0.00,
-            titleTextStyle: const TextStyle(
-                fontSize: 20, fontWeight: FontWeight.bold, color: textColor),
-            leading: const SizedBox(
-              height: 10,
-              width: 10,
-            ),
-            title: const Text('Update Subject'),
-          ),
+          // appBar: AppBar(
+          //   backgroundColor: primaryColor,
+          //   titleSpacing: 00.0,
+          //   centerTitle: true,
+          //   toolbarHeight: 60.2,
+          //   toolbarOpacity: 0.8,
+          //   shape: const RoundedRectangleBorder(
+          //     borderRadius: BorderRadius.only(
+          //         bottomRight: Radius.circular(25),
+          //         bottomLeft: Radius.circular(25)),
+          //   ),
+          //   elevation: 0.00,
+          //   titleTextStyle: const TextStyle(
+          //       fontSize: 20, fontWeight: FontWeight.bold, color: textColor),
+          //   leading: const SizedBox(
+          //     height: 10,
+          //     width: 10,
+          //   ),
+          //   title: const Text('Update Subject'),
+          // ),
           body: BackgroundHome(
+            
             child: Form(
               key: _formKey,
               child: Column(

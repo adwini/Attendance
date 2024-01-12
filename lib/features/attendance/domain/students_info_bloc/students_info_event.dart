@@ -25,6 +25,12 @@ class DeleteStudentEvent extends StudentInfoEvent {
   });
 }
 
+class CheckStudentEvent extends StudentInfoEvent {
+  final CheckStudentModel checkStudentModel;
+
+  CheckStudentEvent({required this.checkStudentModel});
+}
+
 class GetStudentEvent extends StudentInfoEvent {
   final String titleID;
 

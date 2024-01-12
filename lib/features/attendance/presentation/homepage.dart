@@ -1,6 +1,7 @@
 // ignore_for_file: unused_local_variable
 
 import 'package:attendance_practice/core/components/background_home.dart';
+
 import 'package:attendance_practice/features/attendance/domain/students_info_bloc/students_info_bloc.dart';
 import 'package:attendance_practice/features/attendance/domain/class_info_bloc/class_info_bloc.dart';
 import 'package:attendance_practice/features/auth/presentation/pages/login.dart';
@@ -32,10 +33,10 @@ class _HomePageState extends State<HomePage> {
   late ClassInfoBloc _classInfoBloc;
   late AuthBloc _authBloc;
 
-  // late TextEditingController _firstName;
-  // late TextEditingController _lastName;
-  // late TextEditingController _email;
   late String userId;
+
+  late TextEditingController subjectNameUpdate;
+  late TextEditingController subjectCodeUpdate;
 
   final GlobalKey<FormState> _formKey = GlobalKey();
 
@@ -51,10 +52,6 @@ class _HomePageState extends State<HomePage> {
     userId = widget.authUserModel.userId;
     _authBloc.add(AuthAutoLoginEvent());
     _classInfoBloc.add(GetClassInfoEvent(userId: userId));
-
-    // _firstName = TextEditingController(text: widget.authUserModel.firstName);
-    // _lastName = TextEditingController(text: widget.authUserModel.lastName);
-    // _email = TextEditingController(text: widget.authUserModel.email);
   }
 
   final DIContainer diContainer = DIContainer();
@@ -107,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                       fontWeight: FontWeight.bold,
                       color: textColor),
                   title: Text('Class List',
-                      style: GoogleFonts.kanit(fontSize: 23.0)),
+                      style: GoogleFonts.dmSans(fontSize: 23.0)),
                   actions: <Widget>[
                     IconButton(
                         onPressed: _logout,
@@ -164,41 +161,66 @@ class _HomePageState extends State<HomePage> {
                         return Dismissible(
                           key: UniqueKey(),
                           direction: DismissDirection.endToStart,
-                          confirmDismiss: (direction) {
-                            return showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text('Delete Confirmation'),
-                                  content: Text(
-                                      'Are you sure you want to delete ${classList.title}?'),
-                                  actions: <Widget>[
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          _deleteTitleGrocery(context,
-                                              classList.id, classList.title);
-                                        },
-                                        child: const Text('Delete')),
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text('Cancel'))
-                                  ],
-                                );
-                              },
-                            );
+                          confirmDismiss: (direction) async {
+                            {
+                              return showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('Delete Confirmation'),
+                                    content: Text(
+                                        'Are you sure you want to delete ${classList.title}?'),
+                                    actions: <Widget>[
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            _deleteTitleGrocery(context,
+                                                classList.id, classList.title);
+                                          },
+                                          child: const Text('Delete')),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('Cancel'))
+                                    ],
+                                  );
+                                },
+                              );
+                            }
                           },
                           background: Container(
                             color: Colors.red,
-                            child: const Padding(
-                              padding: EdgeInsets.all(15),
+                            child: Padding(
+                              padding: const EdgeInsets.all(15),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
-                                children: [Icon(Icons.delete), Text('Delete')],
+                                children: [
+                                  Text('Delete',
+                                      style: GoogleFonts.dmSans(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600))
+                                ],
                               ),
                             ),
                           ),
+                          // background: Container(
+                          //   color: Colors.yellow.shade300,
+                          //   child: Align(
+                          //     alignment: Alignment.centerLeft,
+                          //     child: Padding(
+                          //       padding: const EdgeInsets.only(left: 16),
+                          //       child: Row(
+                          //         mainAxisAlignment: MainAxisAlignment.start,
+                          //         children: [
+                          //           Text('Edit',
+                          //               style: GoogleFonts.dmSans(
+                          //                   fontSize: 20,
+                          //                   fontWeight: FontWeight.w600))
+                          //         ],
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                           child: GestureDetector(
                             onTap: () {
                               Navigator.push(
@@ -235,7 +257,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 child: ListTile(
                                   title: Text(
-                                    style: GoogleFonts.kanit(
+                                    style: GoogleFonts.dmSans(
                                         fontSize: 25.0,
                                         fontWeight: FontWeight.w400),
                                     classList.title,
@@ -243,7 +265,7 @@ class _HomePageState extends State<HomePage> {
                                   subtitle: Text(
                                     classList.subjectCode,
 
-                                    style: GoogleFonts.kanit(fontSize: 18.0),
+                                    style: GoogleFonts.dmSans(fontSize: 18.0),
                                     // style: const TextStyle(fontSize: 17.0),
                                   ),
 
@@ -259,25 +281,25 @@ class _HomePageState extends State<HomePage> {
                                   //   onSaved: (val) => print(val),
                                   // ),
 
-                                  trailing: IconButton(
-                                    icon: const Icon(
-                                      Icons.edit,
-                                    ),
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              BlocProvider.value(
-                                            value: _classInfoBloc,
-                                            child: UpdateClassInfoPage(
-                                              classInfoModel: classList,
+                                  trailing: TextButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                BlocProvider.value(
+                                              value: _classInfoBloc,
+                                              child: UpdateClassInfoPage(
+                                                classInfoModel: classList,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                  ),
+                                        );
+                                      },
+                                      child: Text("Edit",
+                                          style: GoogleFonts.dmSans(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600))),
                                 ),
                               ),
                             ),
@@ -288,7 +310,7 @@ class _HomePageState extends State<HomePage> {
                   }),
                 ),
                 floatingActionButton: FloatingActionButton(
-                  backgroundColor: const Color.fromARGB(255, 255, 136, 34),
+                  backgroundColor: primaryColor,
                   onPressed: () {
                     _displayAddDialog(context);
                   },
@@ -325,74 +347,6 @@ class _HomePageState extends State<HomePage> {
         ModalRoute.withName('/'));
   }
 
-  Future _displayAddDialog(BuildContext context) async {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return Form(
-            key: _formKey,
-            child: AlertDialog(
-              scrollable: true,
-              title: const Text('Add Class Details'),
-              content: Column(
-                children: [
-                  TextFormField(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (val) {
-                      return Guard.againstEmptyString(val, 'Subject Title');
-                    },
-                    controller: _classInfo,
-                    autofocus: true,
-                    decoration: const InputDecoration(
-                        hintText: "Enter your subject name",
-                        labelText: 'Subject Title'),
-                  ),
-                  TextFormField(
-                    textCapitalization: TextCapitalization.characters,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (val) {
-                      return Guard.againstEmptyString(val, 'Subject Code');
-                    },
-                    controller: _subjectCode,
-                    autofocus: true,
-                    decoration: const InputDecoration(
-                        hintText: "Enter your subject code",
-                        labelText: 'Subject Code'),
-                  ),
-                ],
-              ),
-              actions: <Widget>[
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: buttonColor,
-                    foregroundColor: textColor,
-                  ),
-                  child: const Text('ADD'),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _addClassInfo(context);
-                      Navigator.of(context).pop();
-                      _classInfo.clear();
-                      _subjectCode.clear();
-                    }
-                  },
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: buttonColor,
-                    foregroundColor: textColor,
-                  ),
-                  child: const Text('CANCEL'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                )
-              ],
-            ),
-          );
-        });
-  }
-
   void _addClassInfo(BuildContext context) {
     _classInfoBloc.add(
       AddClassInfoEvent(
@@ -411,5 +365,85 @@ class _HomePageState extends State<HomePage> {
         deleteClassInfoModel: DeleteClassInfoModel(id: id)));
 
     Navigator.of(context).pop();
+  }
+
+  Future _displayAddDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Form(
+            key: _formKey,
+            child: AlertDialog(
+              scrollable: true,
+              title: Text('Add Class Details',
+                  style: GoogleFonts.dmSans(fontSize: 23.0)),
+              content: Column(
+                children: [
+                  TextFormField(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (val) {
+                      return Guard.againstEmptyString(val, 'Subject Title');
+                    },
+                    controller: _classInfo,
+                    autofocus: true,
+                    decoration: InputDecoration(
+                        hintText: "Enter your subject name",
+                        labelText: 'Subject Title',
+                        labelStyle: GoogleFonts.dmSans(
+                            fontSize: 20, fontWeight: FontWeight.w500)),
+                  ),
+                  TextFormField(
+                    textCapitalization: TextCapitalization.characters,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (val) {
+                      return Guard.againstEmptyString(val, 'Subject Code');
+                    },
+                    controller: _subjectCode,
+                    autofocus: true,
+                    decoration: InputDecoration(
+                        hintText: "Enter your subject code",
+                        labelText: 'Subject Code',
+                        labelStyle: GoogleFonts.dmSans(
+                            fontSize: 20, fontWeight: FontWeight.w500)),
+                  ),
+                ],
+              ),
+              actions: <Widget>[
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: primaryColor,
+                    foregroundColor: textColor,
+                  ),
+                  child: Text('ADD',
+                      style: GoogleFonts.dmSans(
+                          fontSize: 15, fontWeight: FontWeight.w600)),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      _addClassInfo(context);
+                      Navigator.of(context).pop();
+                      // subjectNameUpdate = _classInfo;
+                      // subjectCodeUpdate = _subjectCode;
+
+                      _classInfo.clear();
+                      _subjectCode.clear();
+                    }
+                  },
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: primaryColor,
+                    foregroundColor: textColor,
+                  ),
+                  child: Text('CANCEL',
+                      style: GoogleFonts.dmSans(
+                          fontSize: 15, fontWeight: FontWeight.w600)),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            ),
+          );
+        });
   }
 }

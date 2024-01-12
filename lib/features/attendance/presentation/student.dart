@@ -1,4 +1,5 @@
 import 'package:attendance_practice/core/components/background_home.dart';
+import 'package:attendance_practice/features/attendance/domain/models/Students.Model/check_student.model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:attendance_practice/core/constants/color.dart';
@@ -12,7 +13,6 @@ import 'package:attendance_practice/features/attendance/domain/models/Students.M
 import 'package:attendance_practice/features/attendance/domain/class_info_bloc/class_info_bloc.dart';
 import 'package:attendance_practice/features/attendance/presentation/update_student_info.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 
 class StudentPage extends StatefulWidget {
   const StudentPage({super.key, required this.classInfoModel});
@@ -24,19 +24,25 @@ class StudentPage extends StatefulWidget {
 
 class _StudentPageState extends State<StudentPage> {
   late StudentInfoBloc _studentInfoBloc;
-
   late ClassInfoBloc _classInfoBloc;
 
   final TextEditingController _firstName = TextEditingController();
   final TextEditingController _lastName = TextEditingController();
 
-  final TextEditingController _yrLvl = TextEditingController();
   final TextEditingController _gender = TextEditingController();
-  final TextEditingController _course = TextEditingController();
+
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   late String studentId;
   late String classInfo;
+
+  final degreeList = ["BSCS", "BSIT", "BSBA", "BSA", "BSHM"];
+  final yearList = ["1st Year", "2nd Year", "3rd Year", "4th Year"];
+
+  String selectedVal = "BSCS";
+  String selectedYear = "1st Year";
+
+  DateTime selectedDate = DateTime.now();
 
   @override
   void initState() {
@@ -93,7 +99,7 @@ class _StudentPageState extends State<StudentPage> {
                 fontSize: 20, fontWeight: FontWeight.bold, color: textColor),
             title: Text(
               '$classInfo Students',
-              style: GoogleFonts.kanit(fontSize: 23.0),
+              style: GoogleFonts.dmSans(fontSize: 23.0),
             ),
           ),
           body: BackgroundHome(
@@ -144,9 +150,13 @@ class _StudentPageState extends State<StudentPage> {
                     itemBuilder: (context, index) {
                       final studentList = studentState.studentList[index];
 
-                      // String titleDate = studentList.createdAt!;
+                      // String titleDate = studentList.createdAt ?? " ";
+                      // String formattedDate =
+                      //     DateFormat().dateOnly.
                       // String formattedDate = DateFormat('EEE, M/d/y')
                       //     .format(DateTime.parse(titleDate));
+
+                      // print(titleDate);
 
                       return Dismissible(
                         key: UniqueKey(),
@@ -208,23 +218,37 @@ class _StudentPageState extends State<StudentPage> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: ListTile(
+                                minLeadingWidth: 2.0,
+                                // leading: Text(
+                                //   formattedDate,
+                                //   style: GoogleFonts.dmSans(
+                                //       fontWeight: FontWeight.w600,
+                                //       fontSize: 12.0),
+                                // ),
+                                // TODO: Uncomment this leading date display
                                 title: Text(
                                   '${studentList.firstName} ${studentList.lastName}',
-                                  style: GoogleFonts.kanit(
-                                      fontSize: 25.0,
+                                  style: GoogleFonts.dmSans(
+                                      fontSize: 20.0,
                                       fontWeight: FontWeight.w400),
                                 ),
                                 subtitle: Text(
                                   "${studentList.course} ${studentList.year_level} ",
-                                  style: GoogleFonts.kanit(fontSize: 18.0),
+                                  style: GoogleFonts.dmSans(
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.w400),
                                 ),
-
-                                // trailing: Checkbox(
-                                //     value: studentList.isPresent,
-                                //     onChanged: (bool? newIsChecked) {
-                                //       _checkListener(
-                                //           context, item.id, newIsChecked ?? false);
-                                //     }),
+                                trailing: Checkbox(
+                                    value: studentList.isPresent,
+                                    onChanged: (bool? newIsChecked) {
+                                      _checkStudentListener(
+                                          context,
+                                          studentList.id,
+                                          newIsChecked ?? false);
+                                    }),
+                                //TODO : Fix the checkbox
+                                //TODO: Can update in database but cannot update the checkbox in UI
+                                //TODO: UI can be updated  when the page is refresh
                               ),
                             ),
                           ),
@@ -250,18 +274,18 @@ class _StudentPageState extends State<StudentPage> {
       },
     );
   }
-  // void _checkListener(BuildContext context, String id, bool isPresent) {
-  //   _studentInfoBloc.add(
-  //     AddStudentEvent(
-  //       addStudentModel: AddStudentModel(
-  //         titleId: id,
-  //         isPresent: isChecked,
-  //       ),
-  //     ),
-  //   );
-  // }
 
-  //TODO: Check the student if present or not using checkbox and add listener
+  void _checkStudentListener(BuildContext context, String id, bool isPresent) {
+    _studentInfoBloc.add(
+      CheckStudentEvent(
+        checkStudentModel: CheckStudentModel(
+          id: id,
+          isPresent: isPresent,
+        ),
+      ),
+    );
+  }
+
   void _addStudent(BuildContext context) {
     _studentInfoBloc.add(AddStudentEvent(
         addStudentModel: AddStudentModel(
@@ -269,8 +293,8 @@ class _StudentPageState extends State<StudentPage> {
             firstName: _firstName.text,
             lastName: _lastName.text,
             gender: _gender.text,
-            course: _course.text,
-            year_level: _yrLvl.text)));
+            course: selectedVal,
+            year_level: selectedYear)));
   }
 
   void _studentListener(
@@ -298,19 +322,27 @@ class _StudentPageState extends State<StudentPage> {
     }
   }
 
+  void _deleteStudent(BuildContext context, String id) {
+    _studentInfoBloc.add(
+        DeleteStudentEvent(deleteStudentModel: DeleteStudentModel(id: id)));
+    Navigator.of(context).pop();
+  }
+
   Future _displayAddDialog(BuildContext context) async {
     return showDialog(
+      useSafeArea: true,
       context: context,
       builder: (BuildContext context) {
         return Form(
           key: _formKey,
           child: AlertDialog(
             scrollable: true,
-            title: const Text('Add Attendance'),
+            title: Text('Add Attendance',
+                style: GoogleFonts.dmSans(fontSize: 23.0)),
             content: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 3),
                   child: TextFormField(
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (val) {
@@ -318,11 +350,14 @@ class _StudentPageState extends State<StudentPage> {
                     },
                     controller: _firstName,
                     autofocus: true,
-                    decoration: const InputDecoration(labelText: 'First Name'),
+                    decoration: InputDecoration(
+                        labelText: 'First Name',
+                        labelStyle: GoogleFonts.dmSans(
+                            fontSize: 20, fontWeight: FontWeight.w500)),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 3),
                   child: TextFormField(
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (val) {
@@ -330,34 +365,68 @@ class _StudentPageState extends State<StudentPage> {
                     },
                     controller: _lastName,
                     autofocus: true,
-                    decoration: const InputDecoration(labelText: 'Last Name'),
+                    decoration: InputDecoration(
+                        labelText: 'Last Name',
+                        labelStyle: GoogleFonts.dmSans(
+                            fontSize: 20, fontWeight: FontWeight.w500)),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: TextFormField(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (val) {
-                      return Guard.againstEmptyString(val, 'Degree Program');
-                    },
-                    controller: _course,
-                    autofocus: true,
-                    decoration:
-                        const InputDecoration(labelText: 'Degree Program'),
-                  ),
-                ),
+                    padding: const EdgeInsets.symmetric(vertical: 3),
+                    child: DropdownButtonFormField(
+                      dropdownColor: Colors.deepPurple.shade100,
+                      icon: const Icon(Icons.arrow_drop_down),
+                      decoration: InputDecoration(
+                          labelText: "Degree Program",
+                          labelStyle: GoogleFonts.dmSans(
+                              fontWeight: FontWeight.w400,
+                              fontStyle: FontStyle.italic)),
+                      style: GoogleFonts.dmSans(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      value: selectedVal,
+                      items: degreeList.map((e) {
+                        return DropdownMenuItem(
+                          value: e,
+                          child: Text(e),
+                        );
+                      }).toList(),
+                      onChanged: (val) {
+                        setState(() {
+                          selectedVal = val as String;
+                        });
+                      },
+                    )),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: TextFormField(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (val) {
-                      return Guard.againstEmptyString(val, 'Year Level');
-                    },
-                    controller: _yrLvl,
-                    autofocus: true,
-                    decoration: const InputDecoration(labelText: 'Year Level'),
-                  ),
-                ),
+                    padding: const EdgeInsets.symmetric(vertical: 3),
+                    child: DropdownButtonFormField(
+                      dropdownColor: Colors.deepPurple.shade100,
+                      icon: const Icon(Icons.arrow_drop_down),
+                      decoration: InputDecoration(
+                          labelText: "Year Level",
+                          labelStyle: GoogleFonts.dmSans(
+                              fontWeight: FontWeight.w400,
+                              fontStyle: FontStyle.italic)),
+                      style: GoogleFonts.dmSans(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      value: selectedYear,
+                      items: yearList.map((e) {
+                        return DropdownMenuItem(
+                          value: e,
+                          child: Text(e),
+                        );
+                      }).toList(),
+                      onChanged: (val) {
+                        setState(() {
+                          selectedYear = val as String;
+                        });
+                      },
+                    )),
+
+                //TODO: Add A datepicker in this area
               ],
             ),
             actions: <Widget>[
@@ -366,7 +435,9 @@ class _StudentPageState extends State<StudentPage> {
                   backgroundColor: primaryColor,
                   foregroundColor: textColor,
                 ),
-                child: const Text('ADD'),
+                child: Text('ADD',
+                    style: GoogleFonts.dmSans(
+                        fontSize: 15, fontWeight: FontWeight.w600)),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _addStudent(context);
@@ -374,8 +445,6 @@ class _StudentPageState extends State<StudentPage> {
                     _firstName.clear();
                     _lastName.clear();
                     _gender.clear();
-                    _yrLvl.clear();
-                    _course.clear();
                   }
                 },
               ),
@@ -384,7 +453,9 @@ class _StudentPageState extends State<StudentPage> {
                   backgroundColor: primaryColor,
                   foregroundColor: textColor,
                 ),
-                child: const Text('CANCEL'),
+                child: Text('CANCEL',
+                    style: GoogleFonts.dmSans(
+                        fontSize: 15, fontWeight: FontWeight.w600)),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -394,11 +465,5 @@ class _StudentPageState extends State<StudentPage> {
         );
       },
     );
-  }
-
-  void _deleteStudent(BuildContext context, String id) {
-    _studentInfoBloc.add(
-        DeleteStudentEvent(deleteStudentModel: DeleteStudentModel(id: id)));
-    Navigator.of(context).pop();
   }
 }

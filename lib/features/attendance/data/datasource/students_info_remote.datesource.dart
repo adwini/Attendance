@@ -1,4 +1,5 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:attendance_practice/features/attendance/domain/models/Students.Model/check_student.model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:attendance_practice/config.dart';
 import 'package:attendance_practice/features/attendance/domain/models/Students.Model/add_student.model.dart';
@@ -72,5 +73,14 @@ class StudentInfoRemoteDatasource {
           'updatedAt': DateTime.now().toIso8601String(),
         });
     return docs.$id;
+  }
+
+   Future<String> checkStudentModel(CheckStudentModel checkStudentModel) async {
+    final doc = await _databases.updateDocument(
+        databaseId: Config.userdbId,
+        collectionId: Config.studentsId,
+        documentId: checkStudentModel.id,
+        data: {'id': checkStudentModel.id, 'isPresent': checkStudentModel.isPresent});
+    return doc.$id;
   }
 }

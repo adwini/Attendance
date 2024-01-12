@@ -22,10 +22,9 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Attendance',
       debugShowCheckedModeBanner: false,
-
       home: MultiBlocProvider(
-        providers: [ 
-          BlocProvider<AuthBloc>( 
+        providers: [
+          BlocProvider<AuthBloc>(
             create: (BuildContext context) => diContainer.authBloc,
           )
         ],

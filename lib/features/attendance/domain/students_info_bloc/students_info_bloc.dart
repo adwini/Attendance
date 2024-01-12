@@ -1,3 +1,4 @@
+import 'package:attendance_practice/features/attendance/domain/models/Students.Model/check_student.model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:attendance_practice/core/enum/state_status.enum.dart';
 import 'package:attendance_practice/features/attendance/data/repository/students_info_repository.dart';
@@ -14,7 +15,9 @@ part 'students_info_state.dart';
 class StudentInfoBloc extends Bloc<StudentInfoEvent, StudentInfoState> {
   StudentInfoBloc(StudentInfoRepository studentInfoRepository)
       : super(StudentInfoState.initial()) {
+
     on<AddStudentEvent>((event, emit) async {
+      
       emit(state.copyWith(stateStatus: StateStatus.loading));
       final Either<String, String> result =
           await studentInfoRepository.addStudentInfoRepo(event.addStudentModel);
@@ -131,6 +134,40 @@ class StudentInfoBloc extends Bloc<StudentInfoEvent, StudentInfoState> {
           emit(state.copyWith(isEmpty: true));
         }
         emit(state.copyWith(isDeleted: false));
+      });
+    });
+
+    on<CheckStudentEvent>((event, emit) async {
+      final Either<String, Unit> result =
+          await studentInfoRepository.checkStudentRepo(event.checkStudentModel);
+      result.fold((error) {
+        emit(state.copyWith(stateStatus: StateStatus.loaded));
+      }, (success) {
+
+        final currentStudentList = state.studentList;
+        final int index = currentStudentList.indexWhere(
+          (element) => element.id == event.checkStudentModel.id,
+        );
+        final currentStudentModel = currentStudentList[index];
+        currentStudentList.replaceRange(index, index + 1, [
+          StudentInfoModel(
+            id: currentStudentModel.id,
+            firstName: currentStudentModel.firstName,
+            lastName: currentStudentModel.lastName,
+            gender: currentStudentModel.gender,
+            isPresent: currentStudentModel.isPresent, 
+            course: currentStudentModel.course,
+             year_level: currentStudentModel.year_level,
+          ),
+        ]);
+        emit(
+          state.copyWith(
+            studentList: [
+              ...currentStudentList,
+            ],
+          ),
+        );
+        
       });
     });
   }

@@ -1,3 +1,4 @@
+import 'package:attendance_practice/features/attendance/domain/models/Students.Model/check_student.model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:attendance_practice/features/attendance/data/datasource/students_info_remote.datesource.dart';
 import 'package:attendance_practice/features/attendance/domain/models/Students.Model/add_student.model.dart';
@@ -53,6 +54,17 @@ class StudentInfoRepository {
         deleteStudentModel,
       );
       return Right(result);
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+    Future<Either<String, Unit>> checkStudentRepo(
+      CheckStudentModel checkStudentModel) async {
+    try {
+      await _studentInfoRemoteDatasource.checkStudentModel(checkStudentModel);
+
+      return const Right(unit);
     } catch (e) {
       return Left(e.toString());
     }
