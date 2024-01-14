@@ -374,7 +374,8 @@ class _StudentPageState extends State<StudentPage> {
                 Padding(
                     padding: const EdgeInsets.symmetric(vertical: 3),
                     child: DropdownButtonFormField(
-                      dropdownColor: Colors.deepPurple.shade100,
+                      borderRadius: BorderRadius.circular(20),
+                      dropdownColor: Colors.white,
                       icon: const Icon(Icons.arrow_drop_down),
                       decoration: InputDecoration(
                           labelText: "Degree Program",
@@ -382,6 +383,7 @@ class _StudentPageState extends State<StudentPage> {
                               fontWeight: FontWeight.w400,
                               fontStyle: FontStyle.italic)),
                       style: GoogleFonts.dmSans(
+                        color: Colors.black87,
                         fontSize: 20,
                         fontWeight: FontWeight.w400,
                       ),
@@ -401,7 +403,7 @@ class _StudentPageState extends State<StudentPage> {
                 Padding(
                     padding: const EdgeInsets.symmetric(vertical: 3),
                     child: DropdownButtonFormField(
-                      dropdownColor: Colors.deepPurple.shade100,
+                      dropdownColor: Colors.white,
                       icon: const Icon(Icons.arrow_drop_down),
                       decoration: InputDecoration(
                           labelText: "Year Level",
@@ -409,6 +411,7 @@ class _StudentPageState extends State<StudentPage> {
                               fontWeight: FontWeight.w400,
                               fontStyle: FontStyle.italic)),
                       style: GoogleFonts.dmSans(
+                        color: Colors.black87,
                         fontSize: 20,
                         fontWeight: FontWeight.w400,
                       ),
