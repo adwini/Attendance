@@ -240,15 +240,15 @@ class _StudentPageState extends State<StudentPage> {
                                 ),
                                 trailing: Checkbox(
                                     value: studentList.isPresent,
-                                    onChanged: (bool? newIsChecked) {
-                                      _checkStudentListener(
-                                          context,
-                                          studentList.id,
-                                          newIsChecked ?? false);
+                                    onChanged: (bool? value) {
+                                      setState(() {
+                                        _checkStudentListener(
+                                            context,
+                                            studentList.id,
+                                            studentList.isPresent = value!);
+                                      });
                                     }),
-                                //TODO : Fix the checkbox
-                                //TODO: Can update in database but cannot update the checkbox in UI
-                                //TODO: UI can be updated  when the page is refresh
+                               
                               ),
                             ),
                           ),

@@ -335,16 +335,15 @@ class _HomePageState extends State<HomePage> {
 
   void _logout() {
     _authBloc.add(AuthLogoutEvent());
-
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-            builder: (context) => MultiBlocProvider(providers: [
-                  BlocProvider<AuthBloc>(
-                    create: (BuildContext context) => diContainer.authBloc,
-                  ),
-                ], child: const LoginScreen())),
-        ModalRoute.withName('/'));
+    // Navigator.pushAndRemoveUntil(
+    //     context,
+    //     MaterialPageRoute(
+    //         builder: (context) => MultiBlocProvider(providers: [
+    //               BlocProvider<AuthBloc>(
+    //                 create: (BuildContext context) => diContainer.authBloc,
+    //               ),
+    //             ], child: const LoginScreen())),
+    //     ModalRoute.withName('/'));
   }
 
   void _addClassInfo(BuildContext context) {

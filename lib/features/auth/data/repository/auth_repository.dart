@@ -22,18 +22,13 @@ class AuthRepository {
 
   Future<Either<String, AuthUserModel>> login(LoginModel loginModel) async {
     try {
-      //Login using the model
       final Session session = await _remoteDatasoure.login(loginModel);
 
-      //todo: should pass user id
-      //Save session id
       _authlocalDatasource.saveSessionId(session.$id);
 
-      //Get Auth user
       final AuthUserModel authUserModel =
           await _remoteDatasoure.getAuthUser(session.userId);
 
-      //return Auth user
       return Right(authUserModel);
     } catch (e) {
       return Left(e.toString());
@@ -43,28 +38,18 @@ class AuthRepository {
   Future<Either<String, AuthUserModel>> register(
       RegisterModel registerModel) async {
     try {
-      //First Create account for Login
       await _remoteDatasoure.createAccount(registerModel);
 
-      //Todo: Get session from appwrite
-      //Login to get userId
       final Session session = await _remoteDatasoure.login(LoginModel(
           email: registerModel.email, password: registerModel.password));
 
-      // should pass user id
-      //Save session id
       _authlocalDatasource.saveSessionId(session.$id);
 
-      //Todo: Pass the user ID from session
-      //Save User Data to database
       await _remoteDatasoure.saveAccount(session.userId, registerModel);
-
-      //get User Data
 
       final AuthUserModel authUserModel =
           await _remoteDatasoure.getAuthUser(session.userId);
 
-      //return AuthUserModel
       return Right(authUserModel);
     } catch (e) {
       return Left(e.toString());

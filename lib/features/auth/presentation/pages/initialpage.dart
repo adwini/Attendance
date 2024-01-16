@@ -17,6 +17,7 @@ class InitialPage extends StatefulWidget {
 class _InitialPageState extends State<InitialPage> {
   late AuthBloc _authBloc;
   final DIContainer diContainer = DIContainer();
+  
   @override
   void initState() {
     super.initState();

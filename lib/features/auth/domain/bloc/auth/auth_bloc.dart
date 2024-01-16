@@ -25,21 +25,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             stateStatus: StateStatus.loaded, authUserModel: userModel));
       });
     });
-    //get the user
-    // on<AuthGetUserEvent>((event, emit) async {
-    //   emit(state.copyWith(stateStatus: StateStatus.loading));
-    //   final Either<String, AuthUserModel?> result =
-    //       await authRepository.getUser();
 
-    //   result.fold((error) {
-    //     emit(state.copyWith(stateStatus: StateStatus.loading));
-    //     emit(state.copyWith(
-    //         stateStatus: StateStatus.error, errorMessage: error));
-    //   }, (userModel) {
-    //     emit(state.copyWith(
-    //         stateStatus: StateStatus.loaded, authUserModel: userModel));
-    //   });
-    // });
 
     on<AuthLoginEvent>((event, emit) async {
       emit(state.copyWith(stateStatus: StateStatus.loading));
