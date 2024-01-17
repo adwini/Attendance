@@ -4,7 +4,6 @@ import 'package:attendance_practice/core/components/background_home.dart';
 
 import 'package:attendance_practice/features/attendance/domain/students_info_bloc/students_info_bloc.dart';
 import 'package:attendance_practice/features/attendance/domain/class_info_bloc/class_info_bloc.dart';
-import 'package:attendance_practice/features/auth/presentation/pages/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:attendance_practice/core/constants/color.dart';
@@ -130,10 +129,6 @@ class _HomePageState extends State<HomePage> {
                             child: Image.asset(
                               "assets/images/emptyOrange.png",
                             ),
-                            // child: Text(
-                            //   'Add Subject',
-                            //   style: TextStyle(fontSize: 15),
-                            // ),
                           ),
                         ),
                       );
@@ -203,24 +198,6 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ),
-                          // background: Container(
-                          //   color: Colors.yellow.shade300,
-                          //   child: Align(
-                          //     alignment: Alignment.centerLeft,
-                          //     child: Padding(
-                          //       padding: const EdgeInsets.only(left: 16),
-                          //       child: Row(
-                          //         mainAxisAlignment: MainAxisAlignment.start,
-                          //         children: [
-                          //           Text('Edit',
-                          //               style: GoogleFonts.dmSans(
-                          //                   fontSize: 20,
-                          //                   fontWeight: FontWeight.w600))
-                          //         ],
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
                           child: GestureDetector(
                             onTap: () {
                               Navigator.push(
@@ -268,19 +245,6 @@ class _HomePageState extends State<HomePage> {
                                     style: GoogleFonts.dmSans(fontSize: 18.0),
                                     // style: const TextStyle(fontSize: 17.0),
                                   ),
-
-                                  // subtitle: Text(formattedDate),
-                                  // trailing: SelectFormField(
-                                  //   type: SelectFormFieldType
-                                  //       .dropdown, // or can be dialog
-                                  //   initialValue: 'circle',
-                                  //   icon: Icon(Icons.format_shapes),
-                                  //   labelText: 'Shape',
-                                  //   items: _items,
-                                  //   onChanged: (val) => print(val),
-                                  //   onSaved: (val) => print(val),
-                                  // ),
-
                                   trailing: TextButton(
                                       onPressed: () {
                                         Navigator.push(
@@ -333,6 +297,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+//TODO: Logout is not working
   void _logout() {
     _authBloc.add(AuthLogoutEvent());
     // Navigator.pushAndRemoveUntil(
@@ -420,12 +385,9 @@ class _HomePageState extends State<HomePage> {
                     if (_formKey.currentState!.validate()) {
                       _addClassInfo(context);
                       Navigator.of(context).pop();
-                      // subjectNameUpdate = _classInfo;
-                      // subjectCodeUpdate = _subjectCode;
-
-                      _classInfo.clear();
-                      _subjectCode.clear();
                     }
+                    _classInfo.clear();
+                    _subjectCode.clear();
                   },
                 ),
                 ElevatedButton(

@@ -59,26 +59,7 @@ class _UpdateClassInfoPageState extends State<UpdateClassInfoPage> {
           );
         }
         return Scaffold(
-          // appBar: AppBar(
-          //   backgroundColor: primaryColor,
-          //   titleSpacing: 00.0,
-          //   centerTitle: true,
-          //   toolbarHeight: 60.2,
-          //   toolbarOpacity: 0.8,
-          //   shape: const RoundedRectangleBorder(
-          //     borderRadius: BorderRadius.only(
-          //         bottomRight: Radius.circular(25),
-          //         bottomLeft: Radius.circular(25)),
-          //   ),
-          //   elevation: 0.00,
-          //   titleTextStyle: const TextStyle(
-          //       fontSize: 20, fontWeight: FontWeight.bold, color: textColor),
-          //   leading: const SizedBox(
-          //     height: 10,
-          //     width: 10,
-          //   ),
-          //   title: const Text('Update Subject'),
-          // ),
+        
           body: BackgroundHome(
             child: Container(
               padding: const EdgeInsets.all(30.0),

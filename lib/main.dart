@@ -3,6 +3,7 @@ import 'package:attendance_practice/features/auth/domain/bloc/auth/auth_bloc.dar
 import 'package:attendance_practice/features/auth/presentation/pages/initialpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,6 +21,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(fontFamily: GoogleFonts.dmSans().fontFamily),
       title: 'Attendance',
       debugShowCheckedModeBanner: false,
       home: MultiBlocProvider(

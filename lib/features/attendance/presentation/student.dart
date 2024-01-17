@@ -13,6 +13,7 @@ import 'package:attendance_practice/features/attendance/domain/models/Students.M
 import 'package:attendance_practice/features/attendance/domain/class_info_bloc/class_info_bloc.dart';
 import 'package:attendance_practice/features/attendance/presentation/update_student_info.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class StudentPage extends StatefulWidget {
   const StudentPage({super.key, required this.classInfoModel});
@@ -150,12 +151,6 @@ class _StudentPageState extends State<StudentPage> {
                     itemBuilder: (context, index) {
                       final studentList = studentState.studentList[index];
 
-                      // String titleDate = studentList.createdAt ?? " ";
-                      // String formattedDate =
-                      //     DateFormat().dateOnly.
-                      // String formattedDate = DateFormat('EEE, M/d/y')
-                      //     .format(DateTime.parse(titleDate));
-
                       // print(titleDate);
 
                       return Dismissible(
@@ -248,7 +243,6 @@ class _StudentPageState extends State<StudentPage> {
                                             studentList.isPresent = value!);
                                       });
                                     }),
-                               
                               ),
                             ),
                           ),
@@ -429,7 +423,6 @@ class _StudentPageState extends State<StudentPage> {
                       },
                     )),
 
-                //TODO: Add A datepicker in this area
               ],
             ),
             actions: <Widget>[
@@ -445,10 +438,10 @@ class _StudentPageState extends State<StudentPage> {
                   if (_formKey.currentState!.validate()) {
                     _addStudent(context);
                     Navigator.of(context).pop();
-                    _firstName.clear();
-                    _lastName.clear();
-                    _gender.clear();
                   }
+                  _firstName.clear();
+                  _lastName.clear();
+                  _gender.clear();
                 },
               ),
               ElevatedButton(

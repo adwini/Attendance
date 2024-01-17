@@ -15,9 +15,7 @@ part 'students_info_state.dart';
 class StudentInfoBloc extends Bloc<StudentInfoEvent, StudentInfoState> {
   StudentInfoBloc(StudentInfoRepository studentInfoRepository)
       : super(StudentInfoState.initial()) {
-
     on<AddStudentEvent>((event, emit) async {
-      
       emit(state.copyWith(stateStatus: StateStatus.loading));
       final Either<String, String> result =
           await studentInfoRepository.addStudentInfoRepo(event.addStudentModel);
@@ -143,7 +141,6 @@ class StudentInfoBloc extends Bloc<StudentInfoEvent, StudentInfoState> {
       result.fold((error) {
         emit(state.copyWith(stateStatus: StateStatus.loaded));
       }, (success) {
-
         final currentStudentList = state.studentList;
         final int index = currentStudentList.indexWhere(
           (element) => element.id == event.checkStudentModel.id,
@@ -155,9 +152,9 @@ class StudentInfoBloc extends Bloc<StudentInfoEvent, StudentInfoState> {
             firstName: currentStudentModel.firstName,
             lastName: currentStudentModel.lastName,
             gender: currentStudentModel.gender,
-            isPresent: currentStudentModel.isPresent, 
+            isPresent: currentStudentModel.isPresent,
             course: currentStudentModel.course,
-             year_level: currentStudentModel.year_level,
+            year_level: currentStudentModel.year_level,
           ),
         ]);
         emit(
@@ -167,7 +164,6 @@ class StudentInfoBloc extends Bloc<StudentInfoEvent, StudentInfoState> {
             ],
           ),
         );
-        
       });
     });
   }

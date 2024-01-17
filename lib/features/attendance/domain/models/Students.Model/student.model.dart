@@ -7,6 +7,7 @@ class StudentInfoModel {
   final String course;
   final String year_level;
   final String? titleId;
+
   bool isPresent;
   String? createdAt;
 
@@ -19,19 +20,19 @@ class StudentInfoModel {
     required this.course,
     this.titleId,
     required this.year_level,
-        this.createdAt,
+    this.createdAt,
   });
   factory StudentInfoModel.fromJson(Map<String, dynamic> json) {
     return StudentInfoModel(
-        id: json['id'],
-        firstName: json['firstName'],
-        lastName: json['lastName'],
-        gender: json['gender'],
-        course: json['course'],
-        isPresent: json['isPresent'],
-        year_level: json['year_level'],
-        titleId: json['titleId'],
-        createdAt: json['createdAt'] != null ? json['createdAt'] as String : null,
+      id: json['id'],
+      firstName: json['firstName'],
+      lastName: json['lastName'],
+      gender: json['gender'],
+      course: json['course'],
+      isPresent: json['isPresent'],
+      year_level: json['year_level'],
+      titleId: json['titleId'],
+      createdAt: json['createdAt'] != null ? json['createdAt'] as String : null,
     );
   }
 }

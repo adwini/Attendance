@@ -32,6 +32,7 @@ class _UpdateStudentInfoPageState extends State<UpdateStudentInfoPage> {
   @override
   void initState() {
     super.initState();
+
     _studentInfoBloc = BlocProvider.of<StudentInfoBloc>(context);
     widget.studentInfoModel;
 
