@@ -71,6 +71,7 @@ class _InitialPageState extends State<InitialPage> {
                 ),
               ],
               child: HomePage(
+              
                 authUserModel: state.authUserModel!,
               )),
         ),

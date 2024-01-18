@@ -25,7 +25,6 @@ class StudentInfoRemoteDatasource {
         'titleId': addStudentModel.titleId,
         'firstName': addStudentModel.firstName,
         'lastName': addStudentModel.lastName,
-        'gender': addStudentModel.gender,
         'course': addStudentModel.course,
         'year_level': addStudentModel.year_level,
         
@@ -65,7 +64,6 @@ class StudentInfoRemoteDatasource {
           'id': updateStudentModel.id,
           'firstName': updateStudentModel.firstName,
           'lastName': updateStudentModel.lastName,
-          'gender': updateStudentModel.gender,
           'course': updateStudentModel.course,
           'year_level': updateStudentModel.year_level,
           'subjectId': updateStudentModel.id,

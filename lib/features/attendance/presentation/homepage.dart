@@ -1,6 +1,7 @@
 // ignore_for_file: unused_local_variable
 
 import 'package:attendance_practice/core/components/background_home.dart';
+import 'package:attendance_practice/features/attendance/domain/models/Class.Model/class.model.dart';
 
 import 'package:attendance_practice/features/attendance/domain/students_info_bloc/students_info_bloc.dart';
 import 'package:attendance_practice/features/attendance/domain/class_info_bloc/class_info_bloc.dart';
@@ -30,13 +31,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late ClassInfoBloc _classInfoBloc;
+
+  late ClassInfoModel classInfoModel;
   late AuthBloc _authBloc;
-
   late String userId;
-
-  late TextEditingController subjectNameUpdate;
-  late TextEditingController subjectCodeUpdate;
-
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   final TextEditingController _classInfo = TextEditingController();
@@ -45,6 +43,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+
     _authBloc = BlocProvider.of<AuthBloc>(context);
     _classInfoBloc = BlocProvider.of<ClassInfoBloc>(context);
 

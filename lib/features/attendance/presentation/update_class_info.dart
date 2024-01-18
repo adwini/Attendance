@@ -59,94 +59,117 @@ class _UpdateClassInfoPageState extends State<UpdateClassInfoPage> {
           );
         }
         return Scaffold(
-        
           body: BackgroundHome(
             child: Container(
-              padding: const EdgeInsets.all(30.0),
-              margin: const EdgeInsets.only(top: 70),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          right: 15, top: 90, left: 15, bottom: 10),
-                      child: TextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (val) {
-                          return Guard.againstEmptyString(val, 'Subject');
-                        },
-                        controller: _classInfo,
-                        autofocus: true,
-                        decoration: InputDecoration(
-                            labelText: 'Subject name',
-                            labelStyle: GoogleFonts.dmSans(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w400,
-                                fontStyle: FontStyle.italic)),
-                      ),
+              padding: const EdgeInsets.only(right: 30.0, left: 30),
+              margin: const EdgeInsets.only(top: 40),
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: Container(
+                    padding: const EdgeInsets.all(20.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(13),
+                      color: Colors.white30,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          right: 15, top: 10, left: 15, bottom: 10),
-                      child: TextFormField(
-                        textCapitalization: TextCapitalization.characters,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (val) {
-                          return Guard.againstEmptyString(val, 'Subject Code');
-                        },
-                        controller: _subjectCode,
-                        autofocus: true,
-                        decoration: InputDecoration(
-                            labelText: 'Subject Code',
-                            labelStyle: GoogleFonts.dmSans(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w400,
-                                fontStyle: FontStyle.italic)),
-                      ),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Text(
+                            "EDIT CLASS",
+                            style: TextStyle(
+                                fontFamily:
+                                    GoogleFonts.libreBaskerville().fontFamily,
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                                color: const Color(0xFF2661FA)),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              right: 15, top: 15, left: 15, bottom: 10),
+                          child: TextFormField(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (val) {
+                              return Guard.againstEmptyString(val, 'Subject');
+                            },
+                            controller: _classInfo,
+                            autofocus: true,
+                            decoration: InputDecoration(
+                                labelText: 'Subject name',
+                                labelStyle: GoogleFonts.dmSans(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w400,
+                                    fontStyle: FontStyle.italic)),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              right: 15, top: 10, left: 15, bottom: 10),
+                          child: TextFormField(
+                            textCapitalization: TextCapitalization.characters,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (val) {
+                              return Guard.againstEmptyString(
+                                  val, 'Subject Code');
+                            },
+                            controller: _subjectCode,
+                            autofocus: true,
+                            decoration: InputDecoration(
+                                labelText: 'Subject Code',
+                                labelStyle: GoogleFonts.dmSans(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w400,
+                                    fontStyle: FontStyle.italic)),
+                          ),
+                        ),
+                        Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 16),
+                                child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: primaryColor,
+                                      foregroundColor: textColor,
+                                    ),
+                                    onPressed: () {
+                                      if (_formKey.currentState!.validate()) {
+                                        _updateClassInfo(context);
+                                      }
+                                    },
+                                    child: Text('Update',
+                                        style: GoogleFonts.dmSans(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w600))),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 16),
+                                child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: primaryColor,
+                                      foregroundColor: textColor,
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text('Cancel',
+                                        style: GoogleFonts.dmSans(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w600))),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
-                    Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 16),
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: primaryColor,
-                                  foregroundColor: textColor,
-                                ),
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    _updateClassInfo(context);
-                                  }
-                                },
-                                child: Text('Update',
-                                    style: GoogleFonts.dmSans(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w600))),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 16),
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: primaryColor,
-                                  foregroundColor: textColor,
-                                ),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text('Cancel',
-                                    style: GoogleFonts.dmSans(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w600))),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
+                  ),
                 ),
               ),
             ),

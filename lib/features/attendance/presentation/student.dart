@@ -1,19 +1,22 @@
-import 'package:attendance_practice/core/components/background_home.dart';
-import 'package:attendance_practice/features/attendance/domain/models/Students.Model/check_student.model.dart';
+// ignore_for_file: unused_import
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+
+import 'package:attendance_practice/core/components/background_home.dart';
 import 'package:attendance_practice/core/constants/color.dart';
 import 'package:attendance_practice/core/enum/state_status.enum.dart';
 import 'package:attendance_practice/core/global_widgets/snackbar.widget.dart';
 import 'package:attendance_practice/core/utils/guard.dart';
-import 'package:attendance_practice/features/attendance/domain/students_info_bloc/students_info_bloc.dart';
+import 'package:attendance_practice/features/attendance/domain/class_info_bloc/class_info_bloc.dart';
 import 'package:attendance_practice/features/attendance/domain/models/Class.Model/class.model.dart';
 import 'package:attendance_practice/features/attendance/domain/models/Students.Model/add_student.model.dart';
+import 'package:attendance_practice/features/attendance/domain/models/Students.Model/check_student.model.dart';
 import 'package:attendance_practice/features/attendance/domain/models/Students.Model/delete_student.model.dart';
-import 'package:attendance_practice/features/attendance/domain/class_info_bloc/class_info_bloc.dart';
+import 'package:attendance_practice/features/attendance/domain/students_info_bloc/students_info_bloc.dart';
 import 'package:attendance_practice/features/attendance/presentation/update_student_info.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 
 class StudentPage extends StatefulWidget {
   const StudentPage({super.key, required this.classInfoModel});
@@ -29,8 +32,6 @@ class _StudentPageState extends State<StudentPage> {
 
   final TextEditingController _firstName = TextEditingController();
   final TextEditingController _lastName = TextEditingController();
-
-  final TextEditingController _gender = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey();
 
@@ -100,7 +101,8 @@ class _StudentPageState extends State<StudentPage> {
                 fontSize: 20, fontWeight: FontWeight.bold, color: textColor),
             title: Text(
               '$classInfo Students',
-              style: GoogleFonts.dmSans(fontSize: 23.0),
+              style: GoogleFonts.dmSans(
+                  fontSize: 23.0, fontWeight: FontWeight.w400),
             ),
           ),
           body: BackgroundHome(
@@ -152,6 +154,11 @@ class _StudentPageState extends State<StudentPage> {
                       final studentList = studentState.studentList[index];
 
                       // print(titleDate);
+                      // String titleDate = (studentList.createdAt ?? "");
+
+                      // String formattedDate = DateFormat('EEE, M/d/y')
+                      //     .format(DateTime.parse(titleDate));
+                      //TODO: Fix this DateFormat
 
                       return Dismissible(
                         key: UniqueKey(),
@@ -213,7 +220,7 @@ class _StudentPageState extends State<StudentPage> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: ListTile(
-                                minLeadingWidth: 2.0,
+                                // minLeadingWidth: 2.0,
                                 // leading: Text(
                                 //   formattedDate,
                                 //   style: GoogleFonts.dmSans(
@@ -228,7 +235,7 @@ class _StudentPageState extends State<StudentPage> {
                                       fontWeight: FontWeight.w400),
                                 ),
                                 subtitle: Text(
-                                  "${studentList.course} ${studentList.year_level} ",
+                                  "${studentList.course} ${studentList.year_level}",
                                   style: GoogleFonts.dmSans(
                                       fontSize: 15.0,
                                       fontWeight: FontWeight.w400),
@@ -286,7 +293,6 @@ class _StudentPageState extends State<StudentPage> {
             titleId: studentId,
             firstName: _firstName.text,
             lastName: _lastName.text,
-            gender: _gender.text,
             course: selectedVal,
             year_level: selectedYear)));
   }
@@ -330,6 +336,7 @@ class _StudentPageState extends State<StudentPage> {
         return Form(
           key: _formKey,
           child: AlertDialog(
+            // contentPadding: EdgeInsets.all(50),
             scrollable: true,
             title: Text('Add Attendance',
                 style: GoogleFonts.dmSans(fontSize: 23.0)),
@@ -422,7 +429,6 @@ class _StudentPageState extends State<StudentPage> {
                         });
                       },
                     )),
-
               ],
             ),
             actions: <Widget>[
@@ -438,10 +444,9 @@ class _StudentPageState extends State<StudentPage> {
                   if (_formKey.currentState!.validate()) {
                     _addStudent(context);
                     Navigator.of(context).pop();
+                    _firstName.clear();
+                    _lastName.clear();
                   }
-                  _firstName.clear();
-                  _lastName.clear();
-                  _gender.clear();
                 },
               ),
               ElevatedButton(

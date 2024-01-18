@@ -2,7 +2,6 @@
 class AddStudentModel {
   final String firstName;
   final String lastName;
-  final String gender;
   final String course;
   final String year_level;
   final String? titleId;
@@ -10,7 +9,6 @@ class AddStudentModel {
   AddStudentModel({
     required this.firstName,
     required this.lastName,
-    required this.gender,
     required this.course,
     required this.year_level,
     this.titleId,

@@ -3,7 +3,6 @@ class StudentInfoModel {
   final String id;
   final String firstName;
   final String lastName;
-  final String gender;
   final String course;
   final String year_level;
   final String? titleId;
@@ -16,7 +15,6 @@ class StudentInfoModel {
     required this.id,
     required this.firstName,
     required this.lastName,
-    required this.gender,
     required this.course,
     this.titleId,
     required this.year_level,
@@ -27,12 +25,11 @@ class StudentInfoModel {
       id: json['id'],
       firstName: json['firstName'],
       lastName: json['lastName'],
-      gender: json['gender'],
       course: json['course'],
       isPresent: json['isPresent'],
       year_level: json['year_level'],
       titleId: json['titleId'],
-      createdAt: json['createdAt'] != null ? json['createdAt'] as String : null,
+      createdAt: json['createdAt'],
     );
   }
 }

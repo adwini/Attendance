@@ -2,7 +2,6 @@
 class UpdateStudentModel {
   final String firstName;
   final String lastName;
-  final String gender;
   final String course;
   final String year_level;
 
@@ -11,7 +10,6 @@ class UpdateStudentModel {
   UpdateStudentModel(
       {required this.firstName,
       required this.lastName,
-      required this.gender,
       required this.course,
       required this.year_level,
       required this.id,
