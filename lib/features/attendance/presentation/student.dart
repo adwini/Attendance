@@ -381,14 +381,14 @@ class _StudentPageState extends State<StudentPage> {
                       decoration: InputDecoration(
                           labelText: "Degree Program",
                           labelStyle: GoogleFonts.dmSans(
+                              fontSize: 20.0,
                               fontWeight: FontWeight.w400,
                               fontStyle: FontStyle.italic)),
                       style: GoogleFonts.dmSans(
                         color: Colors.black87,
-                        fontSize: 20,
+                        fontSize: 20.0,
                         fontWeight: FontWeight.w400,
                       ),
-                      value: selectedVal,
                       items: degreeList.map((e) {
                         return DropdownMenuItem(
                           value: e,
@@ -409,6 +409,7 @@ class _StudentPageState extends State<StudentPage> {
                       decoration: InputDecoration(
                           labelText: "Year Level",
                           labelStyle: GoogleFonts.dmSans(
+                              fontSize: 20.0,
                               fontWeight: FontWeight.w400,
                               fontStyle: FontStyle.italic)),
                       style: GoogleFonts.dmSans(
@@ -416,7 +417,6 @@ class _StudentPageState extends State<StudentPage> {
                         fontSize: 20,
                         fontWeight: FontWeight.w400,
                       ),
-                      value: selectedYear,
                       items: yearList.map((e) {
                         return DropdownMenuItem(
                           value: e,
