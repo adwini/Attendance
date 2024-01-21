@@ -239,9 +239,12 @@ class _HomePageState extends State<HomePage> {
                                     classList.title,
                                   ),
                                   subtitle: Text(
-                                    classList.subjectCode,
+                                    // classList.subjectCode,
+                                    "${classList.subjectCode}\n9:00-10:00",
 
-                                    style: GoogleFonts.dmSans(fontSize: 18.0),
+                                    style: GoogleFonts.dmSans(
+                                      fontSize: 18.0,
+                                    ),
                                     // style: const TextStyle(fontSize: 17.0),
                                   ),
                                   trailing: TextButton(
@@ -351,7 +354,7 @@ class _HomePageState extends State<HomePage> {
                     autofocus: true,
                     decoration: InputDecoration(
                         hintText: "Enter your subject name",
-                        labelText: 'Subject Title',
+                        labelText: 'Subject Name',
                         labelStyle: GoogleFonts.dmSans(
                             fontSize: 20, fontWeight: FontWeight.w500)),
                   ),

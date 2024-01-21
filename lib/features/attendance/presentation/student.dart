@@ -100,7 +100,7 @@ class _StudentPageState extends State<StudentPage> {
             titleTextStyle: const TextStyle(
                 fontSize: 20, fontWeight: FontWeight.bold, color: textColor),
             title: Text(
-              '$classInfo Students',
+              classInfo,
               style: GoogleFonts.dmSans(
                   fontSize: 23.0, fontWeight: FontWeight.w400),
             ),
@@ -372,6 +372,7 @@ class _StudentPageState extends State<StudentPage> {
                             fontSize: 20, fontWeight: FontWeight.w500)),
                   ),
                 ),
+                //TODO: Bugs -- Can proceed even if there's no selected Degree Program And Year Leveel
                 Padding(
                     padding: const EdgeInsets.symmetric(vertical: 3),
                     child: DropdownButtonFormField(
