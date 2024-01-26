@@ -82,7 +82,7 @@ class AuthRepository {
   Future<Either<String, Unit>> logout() async {
     try {
       final String? sessionId = await _authlocalDatasource.getSessionId();
-      print(sessionId);
+
       if (sessionId != null) {
         await _remoteDatasoure.deleteSession(sessionId);
         await _authlocalDatasource.deleteSession();

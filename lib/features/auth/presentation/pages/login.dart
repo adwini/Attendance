@@ -51,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+      
       body: BlocConsumer<AuthBloc, AuthState>(
         bloc: _authBloc,
         listener: _authBlocListener,

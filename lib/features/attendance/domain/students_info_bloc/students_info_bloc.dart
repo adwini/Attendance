@@ -14,6 +14,7 @@ part 'students_info_state.dart';
 
 class StudentInfoBloc extends Bloc<StudentInfoEvent, StudentInfoState> {
   StudentInfoBloc(StudentInfoRepository studentInfoRepository)
+  
       : super(StudentInfoState.initial()) {
     on<AddStudentEvent>((event, emit) async {
       emit(state.copyWith(stateStatus: StateStatus.loading));

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
@@ -41,8 +42,8 @@ class _StudentPageState extends State<StudentPage> {
   final degreeList = ["BSCS", "BSIT", "BSBA", "BSA", "BSHM"];
   final yearList = ["1st Year", "2nd Year", "3rd Year", "4th Year"];
 
-  String selectedVal = "BSCS";
-  String selectedYear = "1st Year";
+  late String selectedVal;
+  late String selectedYear;
 
   DateTime selectedDate = DateTime.now();
 
@@ -212,7 +213,8 @@ class _StudentPageState extends State<StudentPage> {
                             );
                           },
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 5.0),
                             child: Card(
                               elevation: 4,
                               // color: Colors.white60,
@@ -220,14 +222,6 @@ class _StudentPageState extends State<StudentPage> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: ListTile(
-                                // minLeadingWidth: 2.0,
-                                // leading: Text(
-                                //   formattedDate,
-                                //   style: GoogleFonts.dmSans(
-                                //       fontWeight: FontWeight.w600,
-                                //       fontSize: 12.0),
-                                // ),
-                                // TODO: Uncomment this leading date display
                                 title: Text(
                                   '${studentList.firstName} ${studentList.lastName}',
                                   style: GoogleFonts.dmSans(
@@ -241,15 +235,32 @@ class _StudentPageState extends State<StudentPage> {
                                       fontWeight: FontWeight.w400),
                                 ),
                                 trailing: Checkbox(
-                                    value: studentList.isPresent,
-                                    onChanged: (bool? value) {
-                                      setState(() {
-                                        _checkStudentListener(
-                                            context,
-                                            studentList.id,
-                                            studentList.isPresent = value!);
-                                      });
-                                    }),
+                                  value: studentList.isPresent,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      _checkStudentListener(
+                                          context,
+                                          studentList.id,
+                                          studentList.isPresent = value!);
+
+                                      if (value == true) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              "${studentList.lastName} is Present",
+                                              style: GoogleFonts.dmSans(
+                                                  fontSize: 18.0,
+                                                  fontWeight: FontWeight.w400),
+                                            ),
+                                            duration:
+                                                const Duration(seconds: 1),
+                                          ),
+                                        );
+                                      }
+                                    });
+                                  },
+                                ),
                               ),
                             ),
                           ),
@@ -372,10 +383,13 @@ class _StudentPageState extends State<StudentPage> {
                             fontSize: 20, fontWeight: FontWeight.w500)),
                   ),
                 ),
-                //TODO: Bugs -- Can proceed even if there's no selected Degree Program And Year Leveel
                 Padding(
                     padding: const EdgeInsets.symmetric(vertical: 3),
                     child: DropdownButtonFormField(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (val) {
+                        return Guard.againstEmptyString(val, 'Degree Program');
+                      },
                       borderRadius: BorderRadius.circular(20),
                       dropdownColor: Colors.white,
                       icon: const Icon(Icons.arrow_drop_down),
@@ -405,6 +419,10 @@ class _StudentPageState extends State<StudentPage> {
                 Padding(
                     padding: const EdgeInsets.symmetric(vertical: 3),
                     child: DropdownButtonFormField(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (val) {
+                        return Guard.againstEmptyString(val, 'Year Level');
+                      },
                       dropdownColor: Colors.white,
                       icon: const Icon(Icons.arrow_drop_down),
                       decoration: InputDecoration(
@@ -445,8 +463,13 @@ class _StudentPageState extends State<StudentPage> {
                   if (_formKey.currentState!.validate()) {
                     _addStudent(context);
                     Navigator.of(context).pop();
-                    _firstName.clear();
-                    _lastName.clear();
+
+                    setState(() {
+                      _firstName.clear();
+                      _lastName.clear();
+                      selectedVal = '';
+                      selectedYear = '';
+                    });
                   }
                 },
               ),

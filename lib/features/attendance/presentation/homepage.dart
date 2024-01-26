@@ -1,25 +1,26 @@
 // ignore_for_file: unused_local_variable
 
-import 'package:attendance_practice/core/components/background_home.dart';
-import 'package:attendance_practice/features/attendance/domain/models/Class.Model/class.model.dart';
-
-import 'package:attendance_practice/features/attendance/domain/students_info_bloc/students_info_bloc.dart';
-import 'package:attendance_practice/features/attendance/domain/class_info_bloc/class_info_bloc.dart';
+import 'package:attendance_practice/features/auth/presentation/pages/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+
+import 'package:attendance_practice/core/components/background_home.dart';
 import 'package:attendance_practice/core/constants/color.dart';
 import 'package:attendance_practice/core/dependency_injection/di_container.dart';
 import 'package:attendance_practice/core/enum/state_status.enum.dart';
 import 'package:attendance_practice/core/global_widgets/snackbar.widget.dart';
 import 'package:attendance_practice/core/utils/guard.dart';
-import 'package:attendance_practice/features/auth/domain/bloc/auth/auth_bloc.dart';
-import 'package:attendance_practice/features/auth/domain/models/auth_user.model.dart';
+import 'package:attendance_practice/features/attendance/domain/class_info_bloc/class_info_bloc.dart';
 import 'package:attendance_practice/features/attendance/domain/models/Class.Model/add_class.model.dart';
+import 'package:attendance_practice/features/attendance/domain/models/Class.Model/class.model.dart';
 import 'package:attendance_practice/features/attendance/domain/models/Class.Model/delete_class.model.dart';
+import 'package:attendance_practice/features/attendance/domain/students_info_bloc/students_info_bloc.dart';
 import 'package:attendance_practice/features/attendance/presentation/student.dart';
 import 'package:attendance_practice/features/attendance/presentation/update_class_info.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
+import 'package:attendance_practice/features/auth/domain/bloc/auth/auth_bloc.dart';
+import 'package:attendance_practice/features/auth/domain/models/auth_user.model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.authUserModel});
@@ -353,7 +354,7 @@ class _HomePageState extends State<HomePage> {
                     controller: _classInfo,
                     autofocus: true,
                     decoration: InputDecoration(
-                        hintText: "Enter your subject name",
+                        hintText: "Enter a subject name",
                         labelText: 'Subject Name',
                         labelStyle: GoogleFonts.dmSans(
                             fontSize: 20, fontWeight: FontWeight.w500)),
@@ -367,7 +368,7 @@ class _HomePageState extends State<HomePage> {
                     controller: _subjectCode,
                     autofocus: true,
                     decoration: InputDecoration(
-                        hintText: "Enter your subject code",
+                        hintText: "Enter a subject code",
                         labelText: 'Subject Code',
                         labelStyle: GoogleFonts.dmSans(
                             fontSize: 20, fontWeight: FontWeight.w500)),

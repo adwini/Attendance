@@ -6,7 +6,6 @@ import 'package:attendance_practice/features/auth/domain/models/login_model.dart
 import 'package:attendance_practice/features/auth/domain/models/register_model.dart';
 import 'package:dartz/dartz.dart';
 
-
 class AuthRemoteDatasoure {
   late Account _account;
   late Databases _databases;
@@ -64,9 +63,9 @@ class AuthRemoteDatasoure {
     return session;
   }
 
-  Future<Unit> deleteSession(String sessionId) async {
-    await _account.deleteSession(sessionId: sessionId);
+  Future<Session> deleteSession(String sessionId) async {
+    final Session session = await _account.deleteSession(sessionId: sessionId);
 
-    return unit;
+    return session;
   }
 }
