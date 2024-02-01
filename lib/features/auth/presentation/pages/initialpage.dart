@@ -17,7 +17,7 @@ class InitialPage extends StatefulWidget {
 class _InitialPageState extends State<InitialPage> {
   late AuthBloc _authBloc;
   final DIContainer diContainer = DIContainer();
-  
+
   @override
   void initState() {
     super.initState();
@@ -28,16 +28,14 @@ class _InitialPageState extends State<InitialPage> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
-      bloc: _authBloc,
-      listener: _authListener,
-      child:   Container(
-            color: Colors.transparent,
-            child: const Center(
-              child: CircularProgressIndicator(),
-            ),
-          )
-    
-    );
+        bloc: _authBloc,
+        listener: _authListener,
+        child: Container(
+          color: Colors.transparent,
+          child: const Center(
+            child: CircularProgressIndicator(),
+          ),
+        ));
   }
 
   void _authListener(BuildContext context, AuthState state) {
@@ -71,7 +69,6 @@ class _InitialPageState extends State<InitialPage> {
                 ),
               ],
               child: HomePage(
-              
                 authUserModel: state.authUserModel!,
               )),
         ),

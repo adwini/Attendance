@@ -6,12 +6,14 @@ class UpdateStudentModel {
   final String year_level;
 
   final String id;
+  final String? date;
 
-  UpdateStudentModel(
-      {required this.firstName,
-      required this.lastName,
-      required this.course,
-      required this.year_level,
-      required this.id,
-    });
+  UpdateStudentModel({
+    required this.firstName,
+    required this.lastName,
+    required this.course,
+    required this.year_level,
+    this.date,
+    required this.id,
+  });
 }

@@ -33,6 +33,7 @@ class CheckStudentEvent extends StudentInfoEvent {
 
 class GetStudentEvent extends StudentInfoEvent {
   final String titleID;
+  final StateStatus stateStatus;
 
-  GetStudentEvent({required this.titleID});
+  GetStudentEvent({required this.titleID, required this.stateStatus});
 }

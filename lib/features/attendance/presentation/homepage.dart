@@ -1,6 +1,5 @@
 // ignore_for_file: unused_local_variable
 
-import 'package:attendance_practice/features/auth/presentation/pages/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -41,6 +40,8 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController _classInfo = TextEditingController();
   final TextEditingController _subjectCode = TextEditingController();
 
+  TimeOfDay _timeToday = TimeOfDay.now();
+
   @override
   void initState() {
     super.initState();
@@ -54,6 +55,22 @@ class _HomePageState extends State<HomePage> {
   }
 
   final DIContainer diContainer = DIContainer();
+
+  void clearText() {
+    _classInfo.clear();
+    _subjectCode.clear();
+  }
+
+  Future<void> _selectTime() async {
+    TimeOfDay? picked =
+        await showTimePicker(context: context, initialTime: _timeToday);
+
+    if (picked != null) {
+      setState(() {
+        _timeToday = picked;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -241,7 +258,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   subtitle: Text(
                                     // classList.subjectCode,
-                                    "${classList.subjectCode}\n9:00-10:00",
+                                    "${classList.subjectCode}\n9:00AM-10:00AM",
 
                                     style: GoogleFonts.dmSans(
                                       fontSize: 18.0,
@@ -324,6 +341,8 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+
+    clearText();
   }
 
   void _deleteTitleGrocery(
@@ -373,6 +392,29 @@ class _HomePageState extends State<HomePage> {
                         labelStyle: GoogleFonts.dmSans(
                             fontSize: 20, fontWeight: FontWeight.w500)),
                   ),
+                  TextFormField(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (val) {
+                      return Guard.againstEmptyString(val, 'Time');
+                    },
+                    // controller: _subjectCode,
+
+                    readOnly: true,
+                    autofocus: false,
+                    decoration: InputDecoration(
+
+                        // hintText: "Choose Time to Start",
+                        labelText: 'Start Time',
+                        labelStyle: GoogleFonts.dmSans(
+                            fontSize: 20, fontWeight: FontWeight.w500)),
+
+                    onTap: () {
+                      _selectTime();
+                      setState(() {
+                        
+                      });
+                    },
+                  ),
                 ],
               ),
               actions: <Widget>[
@@ -389,8 +431,6 @@ class _HomePageState extends State<HomePage> {
                       _addClassInfo(context);
                       Navigator.of(context).pop();
                     }
-                    _classInfo.clear();
-                    _subjectCode.clear();
                   },
                 ),
                 ElevatedButton(

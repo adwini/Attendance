@@ -6,30 +6,31 @@ class StudentInfoModel {
   final String course;
   final String year_level;
   final String? titleId;
+  final String? date;
 
   bool isPresent;
   String? createdAt;
 
-  StudentInfoModel({
-    this.isPresent = false,
-    required this.id,
-    required this.firstName,
-    required this.lastName,
-    required this.course,
-    this.titleId,
-    required this.year_level,
-    this.createdAt,
-  });
+  StudentInfoModel(
+      {this.isPresent = false,
+      required this.id,
+      required this.firstName,
+      required this.lastName,
+      required this.course,
+      this.titleId,
+      required this.year_level,
+      this.createdAt,
+       this.date});
   factory StudentInfoModel.fromJson(Map<String, dynamic> json) {
     return StudentInfoModel(
-      id: json['id'],
-      firstName: json['firstName'],
-      lastName: json['lastName'],
-      course: json['course'],
-      isPresent: json['isPresent'],
-      year_level: json['year_level'],
-      titleId: json['titleId'],
-      createdAt: json['createdAt'],
-    );
+        id: json['id'],
+        firstName: json['firstName'],
+        lastName: json['lastName'],
+        course: json['course'],
+        isPresent: json['isPresent'],
+        year_level: json['year_level'],
+        titleId: json['titleId'],
+        createdAt: json['createdAt'],
+        date: json['date']);
   }
 }

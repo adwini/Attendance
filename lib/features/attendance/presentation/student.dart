@@ -1,8 +1,5 @@
-// ignore_for_file: unused_import
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_switch/flutter_switch.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
@@ -44,8 +41,9 @@ class _StudentPageState extends State<StudentPage> {
 
   late String selectedVal;
   late String selectedYear;
+  final _dateNow = DateFormat('yMMMMd').format(DateTime.now()).toString();
 
-  DateTime selectedDate = DateTime.now();
+  // DateTime selectedDate = DateTime.now();
 
   @override
   void initState() {
@@ -60,7 +58,21 @@ class _StudentPageState extends State<StudentPage> {
     classInfo = widget.classInfoModel.title;
 
     _studentInfoBloc = BlocProvider.of<StudentInfoBloc>(context);
-    _studentInfoBloc.add(GetStudentEvent(titleID: studentId));
+    _studentInfoBloc.add(
+        GetStudentEvent(titleID: studentId, stateStatus: StateStatus.loading));
+  }
+
+  void clearText() {
+    _firstName.clear();
+    _lastName.clear();
+  }
+
+  void clearForm() {
+    setState(() {
+      selectedVal = '';
+      selectedYear = '';
+    });
+    clearText();
   }
 
   @override
@@ -143,7 +155,8 @@ class _StudentPageState extends State<StudentPage> {
 
                 return RefreshIndicator(
                   onRefresh: () {
-                    _studentInfoBloc.add(GetStudentEvent(titleID: studentId));
+                    _studentInfoBloc.add(GetStudentEvent(
+                        titleID: studentId, stateStatus: StateStatus.loading));
 
                     return Future<void>.delayed(
                         const Duration(milliseconds: 1));
@@ -153,6 +166,19 @@ class _StudentPageState extends State<StudentPage> {
                     itemCount: studentState.studentList.length,
                     itemBuilder: (context, index) {
                       final studentList = studentState.studentList[index];
+
+                      String dateCreated = (studentList.createdAt ?? " ");
+
+                      print(dateCreated);
+
+                      // final date = DateFormat('yMMMMd')
+                      //     .format(DateTime.parse(dateCreated))
+                      //     .toString();
+
+                      DateTime parsed = DateTime.parse(dateCreated);
+
+                      String formattedDate =
+                          DateFormat('MMMM d, yyyy').format(parsed);
 
                       // print(titleDate);
                       // String titleDate = (studentList.createdAt ?? "");
@@ -216,6 +242,7 @@ class _StudentPageState extends State<StudentPage> {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 5.0),
                             child: Card(
+                              color: Colors.indigo.shade50,
                               elevation: 4,
                               // color: Colors.white60,
                               shape: RoundedRectangleBorder(
@@ -229,7 +256,7 @@ class _StudentPageState extends State<StudentPage> {
                                       fontWeight: FontWeight.w400),
                                 ),
                                 subtitle: Text(
-                                  "${studentList.course} ${studentList.year_level}",
+                                  "${studentList.course}  ${studentList.year_level}\n$formattedDate",
                                   style: GoogleFonts.dmSans(
                                       fontSize: 15.0,
                                       fontWeight: FontWeight.w400),
@@ -238,9 +265,7 @@ class _StudentPageState extends State<StudentPage> {
                                   value: studentList.isPresent,
                                   onChanged: (bool? value) {
                                     setState(() {
-                                      _checkStudentListener(
-                                          context,
-                                          studentList.id,
+                                      _checkStudent(context, studentList.id,
                                           studentList.isPresent = value!);
 
                                       if (value == true) {
@@ -287,7 +312,7 @@ class _StudentPageState extends State<StudentPage> {
     );
   }
 
-  void _checkStudentListener(BuildContext context, String id, bool isPresent) {
+  void _checkStudent(BuildContext context, String id, bool isPresent) {
     _studentInfoBloc.add(
       CheckStudentEvent(
         checkStudentModel: CheckStudentModel(
@@ -319,6 +344,18 @@ class _StudentPageState extends State<StudentPage> {
       );
       SnackBarUtils.defualtSnackBar(studentInfoState.errorMessage, context);
     }
+    if (studentInfoState.isStudentAdded) {
+      _studentInfoBloc.add(GetStudentEvent(
+          titleID: studentId, stateStatus: StateStatus.loading));
+
+      clearForm();
+    }
+    if (studentInfoState.isListUpdated) {
+      _studentInfoBloc.add(
+          GetStudentEvent(titleID: studentId, stateStatus: StateStatus.loaded));
+
+      clearForm();
+    }
   }
 
   void _classInfoListener(BuildContext context, ClassInfoState classInfoState) {
@@ -349,8 +386,12 @@ class _StudentPageState extends State<StudentPage> {
           child: AlertDialog(
             // contentPadding: EdgeInsets.all(50),
             scrollable: true,
-            title: Text('Add Attendance',
-                style: GoogleFonts.dmSans(fontSize: 23.0)),
+            title: Text(
+              _dateNow,
+              style: const TextStyle(fontSize: 30.0),
+            ),
+            // title: Text('Add Attendance',
+            //     style: GoogleFonts.dmSans(fontSize: 23.0)),
             content: Column(
               children: [
                 Padding(
@@ -463,13 +504,6 @@ class _StudentPageState extends State<StudentPage> {
                   if (_formKey.currentState!.validate()) {
                     _addStudent(context);
                     Navigator.of(context).pop();
-
-                    setState(() {
-                      _firstName.clear();
-                      _lastName.clear();
-                      selectedVal = '';
-                      selectedYear = '';
-                    });
                   }
                 },
               ),

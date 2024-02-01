@@ -1,6 +1,7 @@
-import 'package:attendance_practice/config.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+import '../../../../config.dart';
 
 class AuthLocalDatasource {
   late FlutterSecureStorage _secureStorage;

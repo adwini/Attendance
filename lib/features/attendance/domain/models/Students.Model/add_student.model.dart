@@ -5,12 +5,12 @@ class AddStudentModel {
   final String course;
   final String year_level;
   final String? titleId;
-
-  AddStudentModel({
-    required this.firstName,
-    required this.lastName,
-    required this.course,
-    required this.year_level,
-    this.titleId,
-  });
+  final String? date;
+  AddStudentModel(
+      {required this.firstName,
+      required this.lastName,
+      required this.course,
+      required this.year_level,
+      this.titleId,
+       this.date});
 }

@@ -27,7 +27,6 @@ class StudentInfoRemoteDatasource {
         'lastName': addStudentModel.lastName,
         'course': addStudentModel.course,
         'year_level': addStudentModel.year_level,
-        
         'createdAt': DateTime.now().toIso8601String(),
         'updatedAt': DateTime.now().toIso8601String(),
       },

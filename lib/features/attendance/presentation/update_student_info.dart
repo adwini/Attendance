@@ -9,6 +9,7 @@ import 'package:attendance_practice/core/utils/guard.dart';
 import 'package:attendance_practice/features/attendance/domain/models/Students.Model/student.model.dart';
 import 'package:attendance_practice/features/attendance/domain/models/Students.Model/update_student.model.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class UpdateStudentInfoPage extends StatefulWidget {
   const UpdateStudentInfoPage({super.key, required this.studentInfoModel});
@@ -255,6 +256,7 @@ class _UpdateStudentInfoPageState extends State<UpdateStudentInfoPage> {
     _studentInfoBloc.add(
       UpdateStudentEvent(
         updateStudentModel: UpdateStudentModel(
+           
             id: _studentIdController,
             firstName: _firstName.text,
             lastName: _lastName.text,

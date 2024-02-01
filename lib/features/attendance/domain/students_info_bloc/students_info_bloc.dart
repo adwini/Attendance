@@ -14,7 +14,6 @@ part 'students_info_state.dart';
 
 class StudentInfoBloc extends Bloc<StudentInfoEvent, StudentInfoState> {
   StudentInfoBloc(StudentInfoRepository studentInfoRepository)
-  
       : super(StudentInfoState.initial()) {
     on<AddStudentEvent>((event, emit) async {
       emit(state.copyWith(stateStatus: StateStatus.loading));
@@ -26,26 +25,28 @@ class StudentInfoBloc extends Bloc<StudentInfoEvent, StudentInfoState> {
             stateStatus: StateStatus.error, errorMessage: error));
         emit(state.copyWith(stateStatus: StateStatus.loaded));
       }, (addStudent) {
-        final currentStudentList = state.studentList;
-        emit(
-          state.copyWith(
-              stateStatus: StateStatus.loaded,
-              studentList: [
-                ...currentStudentList,
-                StudentInfoModel(
-                  id: addStudent,
-                  firstName: event.addStudentModel.firstName,
-                  lastName: event.addStudentModel.lastName,
-                  course: event.addStudentModel.course,
-                  year_level: event.addStudentModel.year_level,
-                ),
-              ],
-              isEmpty: false),
-        );
+        emit(state.copyWith(isStudentAdded: true));
+        emit(state.copyWith(isStudentAdded: false));
+        // final currentStudentList = state.studentList;
+        // emit(
+        //   state.copyWith(
+        //       stateStatus: StateStatus.loaded,
+        //       studentList: [
+        //         ...currentStudentList,
+        //         StudentInfoModel(
+        //             id: addStudent,
+        //             firstName: event.addStudentModel.firstName,
+        //             lastName: event.addStudentModel.lastName,
+        //             course: event.addStudentModel.course,
+        //             year_level: event.addStudentModel.year_level,
+        //             date: event.addStudentModel.date),
+        //       ],
+        //       isEmpty: false),
+        // );
       });
     });
     on<GetStudentEvent>((event, emit) async {
-      emit(state.copyWith(stateStatus: StateStatus.loading));
+      emit(state.copyWith(stateStatus: event.stateStatus));
       final Either<String, List<StudentInfoModel>> result =
           await studentInfoRepository.getStudentsInfoRepo(event.titleID);
 
@@ -67,6 +68,7 @@ class StudentInfoBloc extends Bloc<StudentInfoEvent, StudentInfoState> {
         emit(state.copyWith(isUpdated: false));
       });
     });
+
     on<UpdateStudentEvent>((event, emit) async {
       emit(state.copyWith(stateStatus: StateStatus.loading));
 
@@ -87,6 +89,7 @@ class StudentInfoBloc extends Bloc<StudentInfoEvent, StudentInfoState> {
           [
             StudentInfoModel(
               id: event.updateStudentModel.id,
+              date: event.updateStudentModel.date,
               firstName: event.updateStudentModel.firstName,
               lastName: event.updateStudentModel.lastName,
               course: event.updateStudentModel.course,
@@ -140,28 +143,31 @@ class StudentInfoBloc extends Bloc<StudentInfoEvent, StudentInfoState> {
       result.fold((error) {
         emit(state.copyWith(stateStatus: StateStatus.loaded));
       }, (success) {
-        final currentStudentList = state.studentList;
-        final int index = currentStudentList.indexWhere(
-          (element) => element.id == event.checkStudentModel.id,
-        );
-        final currentStudentModel = currentStudentList[index];
-        currentStudentList.replaceRange(index, index + 1, [
-          StudentInfoModel(
-            id: currentStudentModel.id,
-            firstName: currentStudentModel.firstName,
-            lastName: currentStudentModel.lastName,
-            isPresent: currentStudentModel.isPresent,
-            course: currentStudentModel.course,
-            year_level: currentStudentModel.year_level,
-          ),
-        ]);
-        emit(
-          state.copyWith(
-            studentList: [
-              ...currentStudentList,
-            ],
-          ),
-        );
+        emit(state.copyWith(isListUpdated: true));
+        emit(state.copyWith(isListUpdated: false));
+        // final currentStudentList = state.studentList;
+        // final int index = currentStudentList.indexWhere(
+        //   (element) => element.id == event.checkStudentModel.id,
+        // );
+        // final currentStudentModel = currentStudentList[index];
+        // currentStudentList.replaceRange(index, index + 1, [
+        //   StudentInfoModel(
+        //     id: currentStudentModel.id,
+        //     date: currentStudentModel.date,
+        //     firstName: currentStudentModel.firstName,
+        //     lastName: currentStudentModel.lastName,
+        //     isPresent: currentStudentModel.isPresent,
+        //     course: currentStudentModel.course,
+        //     year_level: currentStudentModel.year_level,
+        //   ),
+        // ]);
+        // emit(
+        //   state.copyWith(
+        //     studentList: [
+        //       ...currentStudentList,
+        //     ],
+        //   ),
+        // );
       });
     });
   }

@@ -63,9 +63,9 @@ class AuthRemoteDatasoure {
     return session;
   }
 
-  Future<Session> deleteSession(String sessionId) async {
-    final Session session = await _account.deleteSession(sessionId: sessionId);
+  Future<Unit> deleteSession(String sessionId) async {
+    await _account.deleteSession(sessionId: sessionId);
 
-    return session;
+    return unit;
   }
 }
