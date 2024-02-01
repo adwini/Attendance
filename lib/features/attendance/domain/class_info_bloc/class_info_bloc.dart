@@ -12,36 +12,36 @@ part 'class_info_event.dart';
 part 'class_info_state.dart';
 
 class ClassInfoBloc extends Bloc<ClassInfoEvent, ClassInfoState> {
-
   ClassInfoBloc(ClassInfoRepository classInfoRepository)
       : super(ClassInfoState.initial()) {
-        
     on<AddClassInfoEvent>((event, emit) async {
       emit(state.copyWith(stateStatus: StateStatus.loading));
       final Either<String, String> result =
           await classInfoRepository.addClassInfoRepo(event.addClassInfoModel);
-
       result.fold((error) {
         emit(state.copyWith(
             stateStatus: StateStatus.error, errorMessage: error));
         emit(state.copyWith(stateStatus: StateStatus.loaded));
       }, (addClassInfo) {
-        final currentClassList = state.classList;
-        emit(state.copyWith(
-          stateStatus: StateStatus.loaded,
-          classList: [
-            ...currentClassList,
-            ClassInfoModel(
-              id: addClassInfo,
-              //give data to GroceryTitleModel => createdAt variable
+        emit(state.copyWith(isClassAdded: true));
+        emit(state.copyWith(isClassAdded: false));
 
-              createdAt: DateTime.timestamp().toIso8601String(),
-              title: event.addClassInfoModel.title,
-              subjectCode: event.addClassInfoModel.subjectCode,
-            ),
-          ],
-          isEmpty: false,
-        ));
+        // final currentClassList = state.classList;
+        // emit(state.copyWith(
+        //   stateStatus: StateStatus.loaded,
+        //   classList: [
+        //     ...currentClassList,
+        //     ClassInfoModel(
+        //       id: addClassInfo,
+        //       //give data to GroceryTitleModel => createdAt variable
+
+        //       createdAt: DateTime.timestamp().toIso8601String(),
+        //       title: event.addClassInfoModel.title,
+        //       subjectCode: event.addClassInfoModel.subjectCode,
+        //     ),
+        //   ],
+        //   isEmpty: false,
+        // ));
       });
     });
     on<GetClassInfoEvent>((event, emit) async {

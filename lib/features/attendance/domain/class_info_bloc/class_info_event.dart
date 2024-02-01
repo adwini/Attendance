@@ -23,8 +23,10 @@ class DeleteClassInfoEvent extends ClassInfoEvent {
 
 class GetClassInfoEvent extends ClassInfoEvent {
   final String? userId;
+  final StateStatus stateStatus;
 
   GetClassInfoEvent({
+    required this.stateStatus,
     this.userId,
   });
 }

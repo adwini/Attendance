@@ -52,7 +52,8 @@ class _StudentPageState extends State<StudentPage> {
     studentId = widget.classInfoModel.id;
 
     _classInfoBloc = BlocProvider.of<ClassInfoBloc>(context);
-    _classInfoBloc.add(GetClassInfoEvent(userId: studentId));
+    _classInfoBloc.add(
+        GetClassInfoEvent(userId: studentId, stateStatus: StateStatus.loading));
 
     //kani gi gamit para sa title kay di makita ang value sa id ingani-on kani pasabot sa ubos
     classInfo = widget.classInfoModel.title;
@@ -180,13 +181,6 @@ class _StudentPageState extends State<StudentPage> {
                       String formattedDate =
                           DateFormat('MMMM d, yyyy').format(parsed);
 
-                      // print(titleDate);
-                      // String titleDate = (studentList.createdAt ?? "");
-
-                      // String formattedDate = DateFormat('EEE, M/d/y')
-                      //     .format(DateTime.parse(titleDate));
-                      //TODO: Fix this DateFormat
-
                       return Dismissible(
                         key: UniqueKey(),
                         direction: DismissDirection.endToStart,
@@ -273,7 +267,7 @@ class _StudentPageState extends State<StudentPage> {
                                             .showSnackBar(
                                           SnackBar(
                                             content: Text(
-                                              "${studentList.lastName} is Present",
+                                              "${studentList.lastName} is present today!",
                                               style: GoogleFonts.dmSans(
                                                   fontSize: 18.0,
                                                   fontWeight: FontWeight.w400),

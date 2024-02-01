@@ -51,7 +51,8 @@ class _HomePageState extends State<HomePage> {
 
     userId = widget.authUserModel.userId;
     _authBloc.add(AuthAutoLoginEvent());
-    _classInfoBloc.add(GetClassInfoEvent(userId: userId));
+    _classInfoBloc.add(
+        GetClassInfoEvent(userId: userId, stateStatus: StateStatus.loading));
   }
 
   final DIContainer diContainer = DIContainer();
@@ -98,7 +99,8 @@ class _HomePageState extends State<HomePage> {
             }
             return RefreshIndicator(
               onRefresh: () {
-                _classInfoBloc.add(GetClassInfoEvent(userId: userId));
+                _classInfoBloc.add(GetClassInfoEvent(
+                    userId: userId, stateStatus: StateStatus.loading));
                 return Future<void>.delayed(const Duration(milliseconds: 1));
               },
               child: Scaffold(
@@ -308,12 +310,39 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void _addClassInfo(BuildContext context) {
+    _classInfoBloc.add(
+      AddClassInfoEvent(
+        addClassInfoModel: AddClassInfoModel(
+          title: _classInfo.text,
+          subjectCode: _subjectCode.text,
+          userId: userId,
+        ),
+      ),
+    );
+  }
+
+  void _deleteTitleGrocery(
+      BuildContext context, String id, String title) async {
+    _classInfoBloc.add(DeleteClassInfoEvent(
+        deleteClassInfoModel: DeleteClassInfoModel(id: id)));
+
+    Navigator.of(context).pop();
+  }
+
   void _classListener(BuildContext context, ClassInfoState classInfoState) {
     if (classInfoState.stateStatus == StateStatus.error) {
       Container(
           color: Colors.transparent,
           child: const Center(child: CircularProgressIndicator()));
       SnackBarUtils.defualtSnackBar(classInfoState.errorMessage, context);
+    }
+
+    if (classInfoState.isClassAdded) {
+      _classInfoBloc.add(
+          GetClassInfoEvent(userId: userId, stateStatus: StateStatus.loading));
+
+      clearForm();
     }
   }
 
@@ -331,26 +360,8 @@ class _HomePageState extends State<HomePage> {
     //     ModalRoute.withName('/'));
   }
 
-  void _addClassInfo(BuildContext context) {
-    _classInfoBloc.add(
-      AddClassInfoEvent(
-        addClassInfoModel: AddClassInfoModel(
-          title: _classInfo.text,
-          subjectCode: _subjectCode.text,
-          userId: userId,
-        ),
-      ),
-    );
-
+  void clearForm() {
     clearText();
-  }
-
-  void _deleteTitleGrocery(
-      BuildContext context, String id, String title) async {
-    _classInfoBloc.add(DeleteClassInfoEvent(
-        deleteClassInfoModel: DeleteClassInfoModel(id: id)));
-
-    Navigator.of(context).pop();
   }
 
   Future _displayAddDialog(BuildContext context) async {
@@ -392,29 +403,27 @@ class _HomePageState extends State<HomePage> {
                         labelStyle: GoogleFonts.dmSans(
                             fontSize: 20, fontWeight: FontWeight.w500)),
                   ),
-                  TextFormField(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (val) {
-                      return Guard.againstEmptyString(val, 'Time');
-                    },
-                    // controller: _subjectCode,
+                  // TextFormField(
+                  //   autovalidateMode: AutovalidateMode.onUserInteraction,
+                  //   validator: (val) {
+                  //     return Guard.againstEmptyString(val, 'Time');
+                  //   },
+                  //   // controller: _subjectCode,
 
-                    readOnly: true,
-                    autofocus: false,
-                    decoration: InputDecoration(
+                  //   readOnly: true,
+                  //   autofocus: false,
+                  //   decoration: InputDecoration(
 
-                        // hintText: "Choose Time to Start",
-                        labelText: 'Start Time',
-                        labelStyle: GoogleFonts.dmSans(
-                            fontSize: 20, fontWeight: FontWeight.w500)),
+                  //       // hintText: "Choose Time to Start",
+                  //       labelText: 'Start Time',
+                  //       labelStyle: GoogleFonts.dmSans(
+                  //           fontSize: 20, fontWeight: FontWeight.w500)),
 
-                    onTap: () {
-                      _selectTime();
-                      setState(() {
-                        
-                      });
-                    },
-                  ),
+                  //   onTap: () {
+                  //     _selectTime();
+                  //     setState(() {});
+                  //   },
+                  // ),
                 ],
               ),
               actions: <Widget>[
