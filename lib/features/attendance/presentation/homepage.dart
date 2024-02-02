@@ -1,5 +1,6 @@
 // ignore_for_file: unused_local_variable
 
+import 'package:attendance_practice/features/auth/presentation/pages/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -167,11 +168,6 @@ class _HomePageState extends State<HomePage> {
                       itemBuilder: (context, index) {
                         final classList = classInfoState.classList[index];
 
-                        //Convert createdAt dateTime from appwrite to DD/MM/YY format
-                        String titleDate = classList.createdAt!;
-                        String formattedDate = DateFormat('EEE, M/d/y')
-                            .format(DateTime.parse(titleDate));
-
                         return Dismissible(
                           key: UniqueKey(),
                           direction: DismissDirection.endToStart,
@@ -259,9 +255,7 @@ class _HomePageState extends State<HomePage> {
                                     classList.title,
                                   ),
                                   subtitle: Text(
-                                    // classList.subjectCode,
-                                    "${classList.subjectCode}\n9:00AM-10:00AM",
-
+                                    classList.subjectCode,
                                     style: GoogleFonts.dmSans(
                                       fontSize: 18.0,
                                     ),
@@ -349,15 +343,15 @@ class _HomePageState extends State<HomePage> {
 //TODO: Logout is not working
   void _logout() {
     _authBloc.add(AuthLogoutEvent());
-    // Navigator.pushAndRemoveUntil(
-    //     context,
-    //     MaterialPageRoute(
-    //         builder: (context) => MultiBlocProvider(providers: [
-    //               BlocProvider<AuthBloc>(
-    //                 create: (BuildContext context) => diContainer.authBloc,
-    //               ),
-    //             ], child: const LoginScreen())),
-    //     ModalRoute.withName('/'));
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+            builder: (context) => MultiBlocProvider(providers: [
+                  BlocProvider<AuthBloc>(
+                    create: (BuildContext context) => diContainer.authBloc,
+                  ),
+                ], child: const LoginScreen())),
+        ModalRoute.withName('/'));
   }
 
   void clearForm() {

@@ -167,11 +167,7 @@ class _StudentPageState extends State<StudentPage> {
                     itemCount: studentState.studentList.length,
                     itemBuilder: (context, index) {
                       final studentList = studentState.studentList[index];
-
                       String dateCreated = (studentList.createdAt ?? " ");
-
-                      print(dateCreated);
-
                       // final date = DateFormat('yMMMMd')
                       //     .format(DateTime.parse(dateCreated))
                       //     .toString();

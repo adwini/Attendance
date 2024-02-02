@@ -135,7 +135,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           labelText: "Password",
                         ),
                         validator: (val) {
-                          return Guard.againstEmptyString(val, 'Password');
+                          return Guard.againstWeakPassword(val, 'Password');
                         },
                       ),
                     ),
@@ -194,9 +194,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       margin: const EdgeInsets.symmetric(
                           horizontal: 40, vertical: 10),
                       child: GestureDetector(
-                        onTap: () => {
-                          Navigator.pop(context)
-                        },
+                        onTap: () => {Navigator.pop(context)},
                         child: const Text(
                           "Already Have an Account? Sign in",
                           style: TextStyle(
@@ -235,9 +233,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 //   create: (BuildContext context) => diContainer.todoBloc,
                 // ),
               ],
-              child: const InitialPage(
-              
-              ),
+              child: const InitialPage(),
             ),
           ),
           ModalRoute.withName('/'));

@@ -28,11 +28,32 @@ class Guard {
     if (isEmpty != null) {
       return isEmpty;
     }
-    final RegExp regExp = RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+    final RegExp regExp = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
 
     if (!regExp.hasMatch(val!)) {
       return '$name is invalid';
+    }
+
+    return null;
+  }
+
+  static String? againstWeakPassword(String? val, String name) {
+    final String? isEmpty = againstEmptyString(val, name);
+    if (isEmpty != null) {
+      return isEmpty;
+    }
+    final RegExp atleast = RegExp(r"^.{8,16}$");
+    final RegExp containSymbol = RegExp(r'[!@#\\$%^&*(),.?":{}|<>]');
+    final RegExp containNumber = RegExp(r"[0-9]");
+
+    if (!atleast.hasMatch(val!)) {
+      return '$name must be 8-16 Characters Long';
+    }
+    if (!containSymbol.hasMatch(val)) {
+      return '$name must contain at least one Special Symbol';
+    }
+    if (!containNumber.hasMatch(val)) {
+      return '$name must must contain at least One Digit';
     }
 
     return null;
